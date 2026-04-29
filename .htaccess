@@ -53,4 +53,8 @@ Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsaf
 
 # 5. CODIFICACIÓN Y ERRORES
 AddDefaultCharset UTF-8
+<<<<<<< HEAD
 # ErrorDocument 404 /index.php
+=======
+# ErrorDocument 404 /index.php
+>>>>>>> fceb6e0 (Fijando rutas y limpieza de htaccess)
