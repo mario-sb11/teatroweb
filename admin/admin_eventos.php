@@ -17,8 +17,20 @@ if (isset($_POST['guardar_todo'])) {
     if ($_POST['tipo_ingreso'] == 'nueva') {
         $titulo = $_POST['titulo_nuevo'];
         $desc = $_POST['descripcion'];
-        $precio_base = $_POST['precio_base'];
-        $duracion = $_POST['duracion']; // Captura duración
+        // --- PROTECCIÓN DEL PRECIO BASE ---
+        if (empty($_POST['precio_base'])) {
+            $precio_base = 0;
+        } else {
+            $precio_base = $_POST['precio_base'];
+        }
+
+        // --- PROTECCIÓN DE LA DURACIÓN ---
+        if (empty($_POST['duracion'])) {
+            $duracion = 0;
+        } else {
+            // Lo forzamos a número entero (int) por si acaso alguien mete letras
+            $duracion = (int)$_POST['duracion']; 
+        }
 
         // Comprobamos si la casilla de "visible" está marcada
         if (isset($_POST['visible'])) {
@@ -200,8 +212,8 @@ $lista_eventos = $pdo->query("SELECT f.id, f.fecha, f.hora, f.precio as precio_e
                                 <input type="number" step="0.01" name="precio_base" placeholder="Ej: 12.00">
                             </div>
                             <div style="flex:1;" class="form-group">
-                                <label>Duración (minutos/texto):</label>
-                                <input type="text" name="duracion" placeholder="Ej: 90 min">
+                                <label>Duración (en minutos):</label>
+                                <input type="number" name="duracion" placeholder="Ej: 90">
                             </div>
                         </div>
 
