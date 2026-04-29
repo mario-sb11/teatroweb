@@ -1,23 +1,20 @@
-# 1. Usamos una imagen oficial de PHP con Apache
 FROM php:8.2-apache
 
-# 2. Instalamos las extensiones de PHP necesarias para conectar con MariaDB/MySQL
+# Instalamos extensiones de base de datos
 RUN docker-php-ext-install pdo pdo_mysql
 
-# 3. Habilitamos el módulo de reescritura de Apache 
-RUN a2enmod rewrite
+# Habilitamos los módulos de Apache necesarios (urls limpias y cabeceras de seguridad)
+RUN a2enmod rewrite headers
 
-# 4. Copiamos todo el contenido de la carpeta actual al servidor de Render
+# Copiamos los archivos del proyecto
 COPY . /var/www/html/
 
+# Aseguramos que existe la carpeta includes y enlazamos el secreto de Render
+RUN mkdir -p /var/www/html/includes
+RUN ln -sf /var/www/html/config.php /var/www/html/includes/config.php
 
-
-# 5. Ajustamos los permisos para que Apache pueda leer los archivos
-# y escribir en la carpeta de uploads
+# Permisos adecuados para que Apache pueda leer los archivos
 RUN chown -R www-data:www-data /var/www/html/
-
-# Creamos un "acceso directo" para que cuando PHP busque 
-# 'includes/config.php', el servidor le dé el 'config.php' de la raíz
-RUN ln -s /var/www/html/config.php /var/www/html/includes/config.php
+RUN chmod -R 755 /var/www/html/
 
 EXPOSE 80
