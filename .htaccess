@@ -1,0 +1,56 @@
+# 1. EVITAR LISTADO DE DIRECTORIOS
+# Seguridad básica: nadie podrá cotillear qué archivos hay en /uploads o /includes.
+Options -Indexes
+
+# 2. BLOQUEO DE ARCHIVOS SENSIBLES
+# Blindamos config.php, el propio .htaccess, volcados SQL, logs y dependencias.
+<FilesMatch "^(config\.php|\.htaccess|.*\.sql|.*\.log|composer\.json)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 3. CABECERAS DE SEGURIDAD (Security Headers)
+# Ocultamos la versión del servidor
+ServerSignature Off
+
+# Previene ataques de Clickjacking (que carguen tu web en un marco de otro sitio)
+Header set X-Frame-Options "SAMEORIGIN"
+
+# Protección contra XSS inyectado en la URL
+Header set X-XSS-Protection "1; mode=block"
+
+# Evita que el navegador intente adivinar el tipo de contenido (MIME Sniffing)
+Header set X-Content-Type-Options "nosniff"
+
+# Controla la información de la URL que se envía al hacer clic en enlaces externos
+Header set Referrer-Policy "strict-origin-when-downgrade"
+
+# LA POLÍTICA DE SEGURIDAD DE CONTENIDO
+# Permite al servidor, reCAPTCHA, Font Awesome y Google Fonts.
+# LA POLÍTICA DE SEGURIDAD DE CONTENIDO (Versión Ultra-Estricta)
+Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; frame-src 'self' https://www.google.com; frame-ancestors 'self'; form-action 'self';"
+
+# 4. REESCRITURA DE URLS (Clean URLs)
+# 4. REESCRITURA DE URLS (Clean URLs)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Convierte /seleccion_hora/23 en seleccion_hora.php?obra=23
+    RewriteRule ^seleccion_hora/([0-9]+)$ seleccion_hora.php?obra=$1 [QSA,L]
+    
+    # 2. Convierte /reserva/37 en reserva.php?f=37
+    RewriteRule ^reserva/([0-9]+)$ reserva.php?f=$1 [QSA,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^([^\.]+)$ $1.php [NC,L]
+</IfModule>
+
+# 5. CODIFICACIÓN Y ERRORES
+AddDefaultCharset UTF-8
+ErrorDocument 404 /index.php

@@ -1,0 +1,18 @@
+# 1. Bloquear el acceso directo a todos los archivos de la carpeta
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+</IfModule>
+
+# 2. exclusividad para los archivos que necesita el JavaScript
+<FilesMatch "^bloquear_temporal\.php$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Allow from all
+    </IfModule>
+</FilesMatch>

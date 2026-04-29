@@ -1,0 +1,64 @@
+<?php
+/**
+ * ARCHIVO: config.php.example
+ * DESCRIPCIÓN: Plantilla de conexión a la base de datos y configuración global.
+ * INSTRUCCIONES: Renombra este archivo a 'config.php' y rellena tus datos reales.
+ */
+
+// --- 1. CONFIGURACIÓN DE SEGURIDAD (CCN-CERT) ---
+
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/php-error.log');
+
+if (session_status() === PHP_SESSION_NONE) {
+    if (!headers_sent()) {
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'domain' => '',
+            'secure' => false, // Cambiar a true en producción (HTTPS)
+            'httponly' => true,
+            'samesite' => 'Strict'
+        ]);
+    }
+    session_start();
+}
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+// ------------------------------------------------
+
+// --- 2. CREDENCIALES DE LA BASE DE DATOS ---
+$host = 'servidor_o_localhost';
+$port = '3306';
+$db   = 'nombre_de_la_base_de_datos';
+$user = 'usuario';
+$pass = 'contraseña';
+
+try {
+    $opciones = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
+
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8", $user, $pass, $opciones);
+    
+} catch (PDOException $e) {
+    error_log("Error crítico de BD: " . $e->getMessage());
+    die("El servicio de reservas no está disponible temporalmente. Disculpe las molestias.");
+}
+
+// --- 3. CONFIGURACIÓN DE ZONA HORARIA ---
+date_default_timezone_set('Europe/Madrid');
+
+// --- 4. CONFIGURACIÓN DE EMAIL (SMTP) ---
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_USER', 'correo@gmail.com');
+define('SMTP_PASS', 'contrasena_de_aplicacion');
+define('SMTP_PORT', 587);
+define('SMTP_FROM', 'correo@gmail.com');
+define('SMTP_FROM_NAME', 'Teatro');
+?>

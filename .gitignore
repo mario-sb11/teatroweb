@@ -1,0 +1,16 @@
+# --- Seguridad ---
+includes/config.php
+.env
+
+# --- Archivos del Sistema y Logs ---
+Thumbs.db
+.DS_Store
+*.log
+php-error.log
+
+# --- Datos Temporales o de Pruebas ---
+archivosPruebas/
+
+# --- IDEs (Configuraciones del editor de código) ---
+.vscode/
+.idea/
