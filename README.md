@@ -19,14 +19,18 @@ Una plataforma web completa para la gestión de eventos, reserva de butacas en t
 * **Despliegue:** Render + Filess.io
 
 ## Arquitectura y Despliegue
-
+La aplicación está desplegada y es totalmente funcional en el siguiente enlace: (https://teatroweb.onrender.com/)
 Este proyecto está diseñado para funcionar en un entorno distribuido:
 1. El código fuente se ejecuta en un entorno serverless a través de **Render**.
 2. La persistencia de datos se maneja externamente mediante una conexión segura por puerto a un clúster de MariaDB en **Filess.io**.
 3. *Nota:* Debido a la capa gratuita de Render, la web puede tardar unos 30-50 segundos en cargar la primera vez si el servidor está en reposo.
 
-## Configuración Local
+## USUARIO ADMIN
+Usuario y contraseña para poder acceder al panel de admin para poder realizar pruebas como administrador:
+Usuario: admin
+Contraseña: admin123
 
+## Configuración Local
 1. git clone https://github.com/mario-sb11/teatroweb.git
 2. Renombra el archivo `includes/config.php.example` a `config.php` y añade tus credenciales de BD y SMTP.
 3. Importa el archivo `teatro_db.sql` (no incluido por privacidad) en tu servidor MySQL/MariaDB.
