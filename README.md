@@ -27,6 +27,7 @@ Este proyecto está diseñado para funcionar en un entorno distribuido:
 
 ## PANEL ADMIN
 Usuario y contraseña para poder acceder al panel de admin para poder realizar pruebas como administrador:
+
 usuario: admin
 
 contraseña: admin123
