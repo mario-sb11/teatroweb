@@ -25,10 +25,11 @@ Este proyecto está diseñado para funcionar en un entorno distribuido:
 2. La persistencia de datos se maneja externamente mediante una conexión segura por puerto a un clúster de MariaDB en **Filess.io**.
 3. *Nota:* Debido a la capa gratuita de Render, la web puede tardar unos 30-50 segundos en cargar la primera vez si el servidor está en reposo.
 
-## USUARIO ADMIN
+## PANEL ADMIN
 Usuario y contraseña para poder acceder al panel de admin para poder realizar pruebas como administrador:
-Usuario: admin
-Contraseña: admin123
+usuario: admin
+
+contraseña: admin123
 
 ## Configuración Local
 1. git clone https://github.com/mario-sb11/teatroweb.git
